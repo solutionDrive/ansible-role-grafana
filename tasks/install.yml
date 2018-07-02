@@ -1,0 +1,45 @@
+---
+- name: Downloading Grafana.
+  get_url:
+    url: "https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana_{{ grafana_version }}_amd64.deb"
+    dest: /tmp/grafana.deb
+
+- name: Install Grafana dependencies
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ grafana_dependency_packages }}"
+
+- name: Install Grafana.
+  command: dpkg -i /tmp/grafana.deb
+  notify: restart grafana
+
+- name: Check if database exists
+  stat:
+    path: "{{ grafana_config_database.path }}"
+  register: database
+  tags: [configuration]
+
+- name: Delete Database if exists
+  file:
+    state: absent
+    path: "{{ grafana_config_database.path }}"
+  when: database.stat.exists
+  tags: [configuration]
+  notify: restart grafana
+
+- name: Set Config file.
+  template:
+    src: grafana.ini.j2
+    dest: /etc/grafana/grafana.ini
+    force: yes
+  tags: [configuration]
+  notify: restart grafana
+
+- name: Installing Plugins.
+  command: "grafana-cli plugins install {{ plugin }}"
+  with_items: "{{ grafana_plugins }}"
+  loop_control:
+    loop_var: plugin
+  tags: [configuration]
+  notify: restart grafana

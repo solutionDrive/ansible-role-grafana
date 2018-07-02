@@ -1,0 +1,41 @@
+---
+- name: Get Organisation Id.
+  uri:
+    url: "{{ grafana_api_url }}/api/orgs/name/{{ role.organisation }}"
+    method: GET
+    user: "{{ grafana_config_security.admin_user }}"
+    password: "{{ grafana_config_security.admin_password }}"
+    force_basic_auth: yes
+    return_content: yes
+  register: grafana_organisation
+
+- name: Add Users to Organisations.
+  uri:
+    url: "{{ grafana_api_url }}/api/orgs/{{ grafana_organisation.json.id }}/users"
+    method: POST
+    user: "{{ grafana_config_security.admin_user }}"
+    password: "{{ grafana_config_security.admin_password }}"
+    body: '{ "loginOrEmail":"{{ role.username }}", "role": "{{ role.role }}"}'
+    force_basic_auth: yes
+    body_format: json
+  ignore_errors: yes
+
+- name: Get User Id.
+  uri:
+    url: "{{ grafana_api_url }}/api/users/lookup?loginOrEmail={{ role.username }}"
+    method: GET
+    user: "{{ grafana_config_security.admin_user }}"
+    password: "{{ grafana_config_security.admin_password }}"
+    force_basic_auth: yes
+    return_content: yes
+  register: grafana_user
+  when: role.standard == true
+
+- name: Change Users Organisation to be standard.
+  uri:
+    url: "{{ grafana_api_url }}/api/users/{{ grafana_user.json.id }}/using/{{ grafana_organisation.json.id }}"
+    method: POST
+    user: "{{ grafana_config_security.admin_user }}"
+    password: "{{ grafana_config_security.admin_password }}"
+    force_basic_auth: yes
+  when: role.standard == true

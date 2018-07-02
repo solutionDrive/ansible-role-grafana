@@ -1,0 +1,43 @@
+---
+# @todo redo config with grafana <= v5.0
+- name: Wait for grafana to start.
+  wait_for:
+    host: "{{ grafana_setup_host }}"
+    port: "{{ grafana_setup_port}}"
+    delay: 1
+    state: started
+
+- name: Create Organisations.
+  include: create-organisations.yml
+  with_items: "{{ grafana_organisations }}"
+  loop_control:
+    loop_var: organisation
+
+- name: Create User.
+  uri:
+    url: "{{ grafana_api_url }}/api/admin/users"
+    method: POST
+    user: "{{ grafana_config_security.admin_user }}"
+    password: "{{ grafana_config_security.admin_password }}"
+    body: '{ "name":"{{ user.username }}", "login": "{{ user.username }}", "password": "{{ user.password }}"}'
+    force_basic_auth: yes
+    body_format: json
+  with_items: "{{ grafana_users }}"
+  loop_control:
+    loop_var: user
+
+- name: Configure Organisations
+  include: configure-organisations.yml
+  with_items: "{{ grafana_roles }}"
+  loop_control:
+    loop_var: role
+
+- name: Delete Default Organisation.
+  uri:
+    url: "{{ grafana_api_url }}/api/orgs/1"
+    method: DELETE
+    user: "{{ grafana_config_security.admin_user }}"
+    password: "{{ grafana_config_security.admin_password }}"
+    force_basic_auth: yes
+  when: grafana_organisations | length > 0
+
