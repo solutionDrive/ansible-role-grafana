@@ -1,8 +1,15 @@
 ---
+- name: Check currect grafana version
+  shell: "grafana-cli --version | head -n1 | grep {{ grafana_version }}"
+  failed_when: False
+  changed_when: False
+  register: current_grafana_version
+
 - name: Downloading Grafana.
   get_url:
     url: "https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana_{{ grafana_version }}_amd64.deb"
     dest: /tmp/grafana.deb
+  when: current_grafana_version.rc != 0
 
 - name: Install Grafana dependencies
   package:
@@ -12,6 +19,7 @@
 
 - name: Install Grafana.
   command: dpkg -i /tmp/grafana.deb
+  when: current_grafana_version.rc != 0
   notify: restart grafana
 
 - name: Set Config file.
