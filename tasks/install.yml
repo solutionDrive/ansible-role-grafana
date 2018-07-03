@@ -14,25 +14,27 @@
   command: dpkg -i /tmp/grafana.deb
   notify: restart grafana
 
+- name: Set Config file.
+  template:
+    src: grafana.ini.j2
+    dest: /etc/grafana/grafana.ini
+    force: yes
+  register: config_file
+  tags: [configuration]
+  notify: restart grafana
+
 - name: Check if database exists
   stat:
     path: "{{ grafana_config_database.path }}"
   register: database
+  when: config_file.changed
   tags: [configuration]
 
 - name: Delete Database if exists
   file:
     state: absent
     path: "{{ grafana_config_database.path }}"
-  when: database.stat.exists
-  tags: [configuration]
-  notify: restart grafana
-
-- name: Set Config file.
-  template:
-    src: grafana.ini.j2
-    dest: /etc/grafana/grafana.ini
-    force: yes
+  when: config_file.changed and database.stat.exists
   tags: [configuration]
   notify: restart grafana
 
