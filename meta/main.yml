@@ -1,4 +1,5 @@
 galaxy_info:
+  role_name: grafana
   author: Julius Noack
   description: Installs Grafana with given Options/Dashboards/Datasources/Users/Organisations/Config-Options and Roles
   company: solutionDrive GmbH
