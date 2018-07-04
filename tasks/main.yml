@@ -1,0 +1,5 @@
+---
+- include: install.yml
+- meta: flush_handlers
+- include: configure.yml
+  tags: [configuration]

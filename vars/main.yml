@@ -1,0 +1,2 @@
+---
+grafana_api_url: "{{ grafana_setup_protocol }}://{{ grafana_setup_host }}:{{ grafana_setup_port }}"

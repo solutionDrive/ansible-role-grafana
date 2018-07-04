@@ -1,0 +1,85 @@
+{% macro configKeys(config) %}
+{% for setting_name, setting_value in config.items() %}
+{% if setting_value %}
+{{ setting_name }} = {{ setting_value }}
+{% endif %}
+{% endfor %}
+{% endmacro %}
+
+[security]
+{{ configKeys(grafana_config_security) }}
+
+[server]
+{{ configKeys(grafana_config_server) }}
+
+[database]
+{{ configKeys(grafana_config_database) }}
+
+[paths]
+{{ configKeys(grafana_config_paths) }}
+
+[users]
+{{ configKeys(grafana_config_users) }}
+
+[auth]
+{{ configKeys(grafana_config_auth) }}
+
+[auth.anonymous]
+{{ configKeys(grafana_config_auth_anonymous) }}
+
+[auth.github]
+{{ configKeys(grafana_config_auth_github) }}
+
+[auth.google]
+{{ configKeys(grafana_config_auth_google) }}
+
+[auth.generic_oauth]
+{{ configKeys(grafana_config_auth_generic_oauth) }}
+
+[auth.basic]
+{{ configKeys(grafana_config_auth_basic) }}
+
+[auth.ldap]
+{{ configKeys(grafana_config_auth_ldap) }}
+
+[auth.proxy]
+{{ configKeys(grafana_config_auth_proxy) }}
+
+[session]
+{{ configKeys(grafana_config_session) }}
+
+[analytics]
+{{ configKeys(grafana_config_analytics) }}
+
+[dashboards.json]
+{{ configKeys(grafana_config_dashboards_json) }}
+
+[smtp]
+{{ configKeys(grafana_config_smtp) }}
+
+[log]
+{{ configKeys(grafana_config_log) }}
+
+[metrics]
+{{ configKeys(grafana_config_metrics) }}
+
+[metrics.graphite]
+{{ configKeys(grafana_config_metrics_graphite) }}
+
+[snapshots]
+{{ configKeys(grafana_config_snapshots) }}
+
+[external_image_storage]
+{{ configKeys(grafana_config_external_image_storage) }}
+
+[external_image_storage.s3]
+{{ configKeys(grafana_config_external_image_storage_s3) }}
+
+[external_image_storage.webdav]
+{{ configKeys(grafana_config_external_image_storage_webdav) }}
+
+[external_image_storage.gcs]
+{{ configKeys(grafana_config_external_image_storage_gcs) }}
+
+[alerting]
+{{ configKeys(grafana_config_alerting) }}
