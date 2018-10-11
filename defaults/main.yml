@@ -154,8 +154,8 @@ grafana_config_users:
   viewers can edit: ""
 
 grafana_config_security:
-  admin_user: ""
-  admin_password: ""
+  admin_user: "admin"
+  admin_password: "admin"
   login_remember_days: ""
   secret_key: ""
   disable_gravatar: ""
