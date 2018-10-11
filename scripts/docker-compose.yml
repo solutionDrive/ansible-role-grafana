@@ -5,6 +5,7 @@ services:
     image: rastasheep/ubuntu-sshd:16.04
     ports:
       - "2222:22"
+      - "3000:3000"
     environment:
       - PUBLIC_KEY=${PUBLIC_KEY}
     volumes:

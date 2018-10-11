@@ -14,4 +14,4 @@ cp -R $PROJECT_DIR/tasks/ $ROLE_DIR/tasks/
 cp -R $PROJECT_DIR/templates/ $ROLE_DIR/templates/
 cp -R $PROJECT_DIR/vars/ $ROLE_DIR/vars/
 
-ansible-playbook -i tests/inventory/hosts tests/playbook.yml
+ansible-playbook -i tests/local/inventory tests/local/playbook.yml
