@@ -2,6 +2,4 @@
   become: yes
 
   roles:
-  - role: solutionDrive.logstash
-  - role: geerlingguy.nginx
   - role: solutionDrive.grafana
