@@ -1,5 +1,5 @@
 ---
-grafana_version: 4.6.3
+grafana_version: 5.3.0
 grafana_users: []
 grafana_organisations: []
 grafana_roles: []
@@ -194,3 +194,4 @@ grafana_config_paths:
   data: ""
   logs: ""
   plugins: ""
+  provisioning: ""
