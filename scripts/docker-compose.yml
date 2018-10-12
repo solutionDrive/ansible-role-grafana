@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  test-ubuntu-server:
+    image: rastasheep/ubuntu-sshd:16.04
+    ports:
+      - "2222:22"
+      - "3000:3000"
+    environment:
+      - PUBLIC_KEY=${PUBLIC_KEY}
+    volumes:
+      - ${PROJECT_DIR}/scripts/importPublicKey.sh:/root/importKey.sh
+    command:
+      - /root/importKey.sh

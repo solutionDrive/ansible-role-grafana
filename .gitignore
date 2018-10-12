@@ -49,3 +49,5 @@ fabric.properties
 #codeception
 tests-cest/_support/_generated
 tests/_output/*
+tests/local/roles/external
+vaultpass
