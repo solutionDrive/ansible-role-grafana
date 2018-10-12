@@ -57,7 +57,9 @@
   notify: restart grafana
 
 - name: Create dashboard Source Directory
-  file: path=/var/lib/grafana/dashboards state=directory
+  file:
+    path: /var/lib/grafana/dashboards
+    state: directory
 
 - name: Copy Dashboard Source Files
   copy:
