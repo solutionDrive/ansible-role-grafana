@@ -16,20 +16,3 @@
     user: "{{ grafana_config_security.admin_user }}"
     password: "{{ grafana_config_security.admin_password }}"
     force_basic_auth: yes
-
-- name: Create Datasource.
-  uri:
-    url: "{{ grafana_api_url }}/api/datasources"
-    method: POST
-    user: "{{ grafana_config_security.admin_user }}"
-    password: "{{ grafana_config_security.admin_password }}"
-    body: '{{ lookup("file", item) }}'
-    force_basic_auth: yes
-    body_format: json
-  with_fileglob: "datasources/*"
-
-- name: Create Dashboards.
-  include: create-dashboards.yml
-  with_fileglob: "dashboards/*"
-  loop_control:
-    loop_var: dashboard

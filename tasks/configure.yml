@@ -1,5 +1,4 @@
 ---
-# @todo redo config with grafana <= v5.0
 - name: Wait for grafana to start.
   wait_for:
     host: "{{ grafana_setup_host }}"
@@ -41,3 +40,31 @@
     force_basic_auth: yes
   when: grafana_organisations | length > 0
 
+- name: Copy Datasource Files
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/grafana/provisioning/datasources/"
+  with_fileglob:
+  - "provisioning/datasources/*"
+  notify: restart grafana
+
+- name: Copy Dashboard Provision Files
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/grafana/provisioning/dashboards/"
+  with_fileglob:
+  - "provisioning/dashboards/*"
+  notify: restart grafana
+
+- name: Create dashboard Source Directory
+  file:
+    path: /var/lib/grafana/dashboards
+    state: directory
+
+- name: Copy Dashboard Source Files
+  copy:
+    src: "{{ item }}"
+    dest: "/var/lib/grafana/dashboards/"
+  with_fileglob:
+  - "dashboards/*"
+  notify: restart grafana

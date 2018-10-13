@@ -1,5 +1,5 @@
 ---
-grafana_version: 4.6.3
+grafana_version: 5.3.0
 grafana_users: []
 grafana_organisations: []
 grafana_roles: []
@@ -154,8 +154,8 @@ grafana_config_users:
   viewers can edit: ""
 
 grafana_config_security:
-  admin_user: ""
-  admin_password: ""
+  admin_user: "admin"
+  admin_password: "admin"
   login_remember_days: ""
   secret_key: ""
   disable_gravatar: ""
@@ -194,3 +194,4 @@ grafana_config_paths:
   data: ""
   logs: ""
   plugins: ""
+  provisioning: ""
